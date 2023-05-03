@@ -1,0 +1,137 @@
+.conatiner-add {
+  display: flex;
+}
+
+.post {
+    margin-top: 2%;
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.formulaire {
+    margin-top: 2%;
+    width: 50vh;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    padding: 3%;
+    border: 1px solid white;
+    background-color: white;
+    box-shadow: 0 5px 5px rgb(231, 230, 230);
+    border-radius: 4px;
+}
+
+.formulaire form {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.champs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.champs input {
+    height: 4vh;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 1%;
+}
+
+button {
+    background-color: #f9f9f0;
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 4px;
+    height: 4vh;
+    /* width: 20%; */
+}
+
+button:hover {
+    cursor: pointer;
+}
+  
+button:active {
+    background-color: #f3f3d6;
+    transform: translateY(4px);
+}
+
+.error {
+    margin-top: 3%;
+    width: 40%;
+    padding: 1%;
+    border: 1px solid rgb(202, 201, 201);
+    box-shadow: 0 5px 5px rgb(231, 230, 230);
+    border-radius: 7px;
+    background-color: rgb(238, 123, 123);
+    text-align: center;
+    font-size: large;
+}
+
+select {
+    margin-top: 1%;
+    height: 4vh;
+    border: 1px solid rgb(202, 202, 202);
+    border-radius: 4px;
+}
+
+.ok {
+  margin-top: 3%;
+  width: 40%;
+  padding: 1%;
+  border: 1px solid rgb(202, 201, 201);
+  box-shadow: 0 5px 5px rgb(231, 230, 230);
+  border-radius: 7px;
+  background-color: rgb(138, 238, 123);
+  text-align: center;
+  font-size: large;
+}
+
+/* .input-file {
+  visibility: hidden;
+}
+
+.file-input {
+  position: relative;
+}
+
+.file-input label {
+  background-color: #0077FF;
+  color: #FFF;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.file-input label:hover {
+  background-color: #005AE6;
+}
+
+.file-input label:active {
+  background-color: #0039B3;
+}
+
+.file-input label:after {
+  content: 'Choose an image';
+}
+
+.file-input input[type="file"]:focus + label {
+  box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.5);
+}
+
+.file-input input[type="file"]:valid + label:after {
+  content: attr(data-file);
+} */
+
