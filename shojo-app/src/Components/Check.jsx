@@ -6,11 +6,10 @@ export const Check = () => {
 
     return (
         <Result
-          style={{marginTop: "3%"}}
           status="success"
           title="Your manga had been add with success"
           extra={[
-            <Button onClick={() => navigate('/')} type="primary" key="console">
+            <Button style={{backgroundColor: '#EDDBC6', color: 'black', border: '1px solid rgb(211, 211, 211)'}} onClick={() => navigate('/')} type="primary" key="console">
               Go to library
             </Button>,
             <Button onClick={() => navigate('/Post')} key="buy">Add one manga again</Button>,

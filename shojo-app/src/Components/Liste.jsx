@@ -6,7 +6,7 @@ import '../css/Home.css'
 
 export const Liste = () => {
     const getURL = 'http://localhost:3000/getAll'
-    const [mangas, setMangas] = useState('')
+    const [mangas, setMangas] = useState([])
 
     useEffect(() => {
         const choperLaData = async() => {
@@ -14,9 +14,7 @@ export const Liste = () => {
                 setMangas(response.data);
             }
         choperLaData()
-    },[mangas]);
-
-    if (!mangas) return null
+    },[]);
 
     return (
         <div className="containerHome">

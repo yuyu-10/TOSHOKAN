@@ -3,9 +3,8 @@
 }
 
 .post {
-    margin-top: 2%;
     width: 100%;
-    height: 80vh;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -15,7 +14,7 @@
 .formulaire {
     margin-top: 2%;
     width: 50vh;
-    height: 40vh;
+    height: 55vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -97,41 +96,3 @@ select {
   text-align: center;
   font-size: large;
 }
-
-/* .input-file {
-  visibility: hidden;
-}
-
-.file-input {
-  position: relative;
-}
-
-.file-input label {
-  background-color: #0077FF;
-  color: #FFF;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.file-input label:hover {
-  background-color: #005AE6;
-}
-
-.file-input label:active {
-  background-color: #0039B3;
-}
-
-.file-input label:after {
-  content: 'Choose an image';
-}
-
-.file-input input[type="file"]:focus + label {
-  box-shadow: 0 0 0 2px rgba(0, 119, 255, 0.5);
-}
-
-.file-input input[type="file"]:valid + label:after {
-  content: attr(data-file);
-} */
-

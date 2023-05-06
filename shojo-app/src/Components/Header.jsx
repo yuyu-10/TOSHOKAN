@@ -37,7 +37,9 @@ export const Header = () => {
         backgroundColor: "#EDDBC7",
         opacity: headerOpacity,
         transition: "opacity 0.3s ease-in-out",
-        position: "fixed"
+        position: "sticky",
+        top: 0,
+        marginBottom: "1%"
       }
     }
 
