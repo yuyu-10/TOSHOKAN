@@ -7,15 +7,28 @@ const pool = new Pool({
   port: 5433,
 })
 
+function runQuery(request, parameters, callback) {
+  pool.query(request, parameters ?? [], (error, results) => {
+      if (error) {
+          throw error
+      } else {
+          callback(results)
+      }
+  })
+}
+
 module.exports = {
-  pool
+  pool,
+  runQuery
 }
 
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const port = 3000
-const db = require('./routes/manga')
+const manga = require('./routes/manga')
+const mangaka = require('./routes/mangaka')
+const cloud = require('./routes/cloudinary')
 var cors = require('cors')
 const { upload } = require('./cloudinaryConfig');
 
@@ -38,39 +51,39 @@ app.listen(port, () => {
 
 //Get all manga with mangakas
 //For the list page
-app.get('/getAll', db.getAll)
+app.get('/getAll', manga.getAll)
 
 //Get manga by the name
 //For search page
-app.get('/getOne', db.getOneShojoByName)
+app.get('/getOne', manga.getOneShojoByName)
 
 //Get one by the id
 //For info page
-app.get('/getOneById/:id', db.getOneShojoById)
+app.get('/getOneById/:id', manga.getOneShojoById)
 
 //Get all mangaka
 //For the select in the post page
-app.get('/getMangakas', db.getAllMangakas)
+app.get('/getMangakas', mangaka.getAllMangakas)
 
 //Add a new mangaka
 //For the post page too
-app.post('/addMangaka', db.addMangaka)
+app.post('/addMangaka', mangaka.addMangaka)
 
 //Call all routes for add a manga
 //For post page again
-app.post('/addManga', db.addManga)
+app.post('/addManga', manga.addManga)
 
 //Verif before add the manga
-app.get('/verifTitle', db.verifTitle)
+app.get('/verifTitle', manga.verifTitle)
 
 //Add infos of the new manga except the image
 //For post page
-app.post('/addMangaDataBase', db.addMangaToDatabase)
+app.post('/addMangaDataBase', manga.addMangaToDatabase)
 
 //Add an image ine cloudinary
 //For post page
-app.post('/upload', upload.array('image'), db.uploadImages)
+app.post('/upload', upload.array('image'), cloud.uploadImages)
 
 //Rec the url of the image on cloudinary for then update the manga
 //Post page 
-app.put('/addImage', db.addImage)
+app.put('/addImage', cloud.addImage)

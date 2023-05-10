@@ -16,6 +16,7 @@ const Post = () => {
   
 
   const onSubmit = async (data) => {
+    console.log(data)
     const postURL = "http://localhost:3000/addManga"
     try {
       const response = await axios.post(postURL, data)
@@ -105,22 +106,29 @@ const Post = () => {
             </div>
             <div className="champs">
               <label> Resume: </label>
-              <input
+              <textarea
                 type="text"
                 {...register("resume")}
                 required
                 maxLength={500}
-                style={{height: '10vh', textAlign: 'start', whiteSpace: 'nowrap', overflow: 'hidden'}}
               />
             </div>
             <div className="champs">
               <label> Mangaka: </label>
               <select {...register("mangaka")}>
+                <option style={{textAlign: 'center'}}>--SELECT A MANGAKA--</option>
                 {mangakas.map((x) => (
-                  <option key={x.id} value={x.id}>
+                  <option key={x.id} value={x.id} style={{textAlign: 'center'}}>
                     {x.author}
                   </option>
                 ))}
+              </select>
+            </div>
+            <div className="champs">
+              <label> Animation: </label>
+              <select {...register("animation")}>
+                <option style={{textAlign: 'center'}}>no</option>
+                <option style={{textAlign: 'center'}}>yes</option>
               </select>
             </div>
             <div className="champs">

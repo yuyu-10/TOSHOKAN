@@ -37,6 +37,7 @@ body, html {
     box-shadow: 0 5px 5px rgb(231, 230, 230);
     border-radius: 4px;
     background-color: white;
+    position: relative;
 }
 
 .informations {

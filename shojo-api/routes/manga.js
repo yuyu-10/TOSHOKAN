@@ -1,5 +1,4 @@
-const { cloudinary, path, upload } = require('../cloudinaryConfig')
-const { pool } = require('../index')
+const { pool, runQuery } = require('../index')
 
 //Route get all with author
 const getAll = (req, res) => {
@@ -12,7 +11,7 @@ const getAll = (req, res) => {
         `, null, (results) => res.json(results.rows))
 }
 
-//Route for get one shojo by his name
+//Route to get one shojo by his name
 const getOneShojoByName = (req, res) => {
     const { title } = req.query
 
@@ -32,6 +31,7 @@ const getOneShojoByName = (req, res) => {
     })
 }
 
+//Route to get one shojo by his id
 const getOneShojoById = (req, res) => {
     const id = parseInt(req.params.id)
 
@@ -50,49 +50,20 @@ const getOneShojoById = (req, res) => {
     })
 }
 
-const getAllMangakas = (req, res) => {
-    runQuery(`
-        SELECT *
-        FROM mangakas
-        ORDER BY author;
-    `, null, (results) => {
-        res.json(results.rows)
-    })
-}
-
-const addMangaka = (req, res) => {
-    const { author } = req.body
-
-    runQuery(`
-        SELECT * 
-        FROM mangakas
-        WHERE UPPER(author) = UPPER($1)
-    `, [`${author}`], (results) => {
-        if (results.rows.length > 0) {
-            res.json({ message: `Le mangaka: ${author} existe déjà` })
-        } else {
-            runQuery(`
-                INSERT INTO mangakas (author)
-                VALUES ($1)
-            `, [`${author}`], (results) => {
-                res.json(results.rows)
-            })
-        }
-    })
-}
-
+//Route to add a manga in the database (post page in front)
 const addManga = (req, res) => {
-    const { title, year, mangaka, resume } = req.body
+    const { title, year, mangaka, resume, animation } = req.body
 
     verifTitle(req, res, title, (result) => {
         if (result.message === "Le titre existe déjà") {
             res.json(result.message)
         } else {
-            addMangaToDatabase(req, res, year, title, mangaka, resume)
+            addMangaToDatabase(req, res, year, title, mangaka, resume, animation)
         }
     })
 }
 
+//Route to check that the manga we want to add does not already exist in the database, check by the title
 const verifTitle = (req, res, title, callback) => {
     runQuery(
         `
@@ -111,75 +82,36 @@ const verifTitle = (req, res, title, callback) => {
     )
 }
 
-const addMangaToDatabase = (req, res, year, title, mangaka, resume) => {
+// Route to add the manga after the check
+const addMangaToDatabase = (req, res, year, title, mangaka, resume, animation) => {
     runQuery(
         `
-        INSERT INTO shojos (year_of_publication, title, mangaka_id, resume)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO shojos (year_of_publication, title, mangaka_id, resume, animation)
+        VALUES ($1, $2, $3, $4, $5)
         `,
-        [`${year}`, `${title}`, mangaka, `${resume}`],
+        [`${year}`, `${title}`, mangaka, `${resume}`, animation],
         (results) => {
             res.json(`${title} has been had to the data`)
         }
     )
 }
 
-const uploadImages = async (req, res) => {
-    const { title } = req.body
-    let newTitle = title.replace(/'/g, '');
-    newTitle = newTitle.toLowerCase();
-    newTitle = newTitle.replace(/\s+/g, '_');
 
-    try {
-        const results = []
-        for (const file of req.files) {
-            const filename = `${newTitle}`
-            // const ext = path.extname(file.originalname)
-            // const finalFilename = `${filename}${ext}`
-            const result = await cloudinary.uploader.upload(file.path, {
-                public_id: filename,
-                folder: 'toshokan',
-                format: 'jpg'
-            })
-            results.push(result)
-        }
-        res.json(results)
-    } catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-}
+// const modifyManga = (req, res) => {
+//     const { title, year, mangaka, resume } = req.body
 
-const addImage = (req, res) => {
-    const { title, url } = req.body
-
-    runQuery(`
-        UPDATE shojos
-        SET image = $1
-        WHERE title = $2
-    `, [`${url}`, `${title}`], (results) => {
-        res.json(results)
-    })
-}
+//     runQuery(`
+//         UPDATE shojos
+//         SET title = COALESCE($1, ), champ2 = COALESCE($2, champ2), champ3 = COALESCE($3, champ3)
+//         WHERE id = $4;
+//     `)
+// }
 
 module.exports = {
     getAll,
     getOneShojoByName,
     getOneShojoById,
-    getAllMangakas,
-    addMangaka,
     addManga,
     verifTitle,
-    uploadImages,
-    addMangaToDatabase,
-    addImage
-}
-
-function runQuery(request, parameters, callback) {
-    pool.query(request, parameters ?? [], (error, results) => {
-        if (error) {
-            throw error
-        } else {
-            callback(results)
-        }
-    })
+    addMangaToDatabase
 }

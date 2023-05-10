@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import React from "react";
 import { Manga } from '../Components/Manga'
-import '../css/Home.css'
+import '../css/Liste.css'
 
 export const Liste = () => {
     const getURL = 'http://localhost:3000/getAll'

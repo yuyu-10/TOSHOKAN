@@ -14,7 +14,7 @@
 .formulaire {
     margin-top: 2%;
     width: 50vh;
-    height: 55vh;
+    height: 60vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -43,6 +43,15 @@
 
 .champs input {
     height: 4vh;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 1%;
+}
+
+.champs textarea {
+    height: 10vh;
+    resize: none;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;

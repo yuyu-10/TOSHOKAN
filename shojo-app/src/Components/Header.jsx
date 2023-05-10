@@ -33,7 +33,7 @@ export const Header = () => {
         alignItems: "center",
         borderBottom: "1px solid rgb(202, 201, 201)",
         boxShadow: "0 5px 5px rgb(231, 230, 230)",
-        position: "relative",
+        // position: "relative",
         backgroundColor: "#EDDBC7",
         opacity: headerOpacity,
         transition: "opacity 0.3s ease-in-out",
@@ -57,7 +57,7 @@ export const Header = () => {
         <div className="header" style={styles.header}>
           <img onClick={() => navigate('/')} src={logo} alt="" />
         <div className="container-recherche">
-          <button onClick={() => {navigate('/')}}>See all</button>
+          <button onClick={() => {navigate('/liste')}}>See all</button>
           <input type="text" placeholder="Which manga?" value={title} onChange={(event) => setTitle(event.target.value)}  onKeyPress={handleKeyPress}/>
           <button onClick={activateButton}>Search</button>
         </div>
