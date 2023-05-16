@@ -97,15 +97,18 @@ const addMangaToDatabase = (req, res, year, title, mangaka, resume, animation) =
 }
 
 
-// const modifyManga = (req, res) => {
-//     const { title, year, mangaka, resume } = req.body
+const modifyManga = (req, res) => {
+    const id = parseInt(req.params.id)
+    const { title, year, mangaka, resume, animation } = req.body
 
-//     runQuery(`
-//         UPDATE shojos
-//         SET title = COALESCE($1, ), champ2 = COALESCE($2, champ2), champ3 = COALESCE($3, champ3)
-//         WHERE id = $4;
-//     `)
-// }
+    runQuery(`
+        UPDATE shojos
+        SET (year_of_publication, title, mangaka_id, resume, animation) = ($1, $2, $3, $4, $5)
+        WHERE id = $6;
+    `, [`${year}`, `${title}`, mangaka,`${resume}`, animation, id], (result) => {
+        res.json(`${title} has been update`)
+    })
+}
 
 module.exports = {
     getAll,
@@ -113,5 +116,6 @@ module.exports = {
     getOneShojoById,
     addManga,
     verifTitle,
-    addMangaToDatabase
+    addMangaToDatabase,
+    modifyManga
 }

@@ -87,3 +87,7 @@ app.post('/upload', upload.array('image'), cloud.uploadImages)
 //Rec the url of the image on cloudinary for then update the manga
 //Post page 
 app.put('/addImage', cloud.addImage)
+
+//Update a manga
+//SetManga page
+app.put('/modifyManga/:id', manga.modifyManga)
