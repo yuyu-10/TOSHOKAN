@@ -93,3 +93,5 @@ app.put('/addImage', cloud.addImage)
 app.put('/modifyManga/:id', manga.modifyManga)
 
 app.post('/deleteImage', cloud.deleteImage)
+
+app.put('/updateImage', cloud.updateImage)

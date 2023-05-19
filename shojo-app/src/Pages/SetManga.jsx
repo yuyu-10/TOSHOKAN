@@ -119,9 +119,9 @@ const SetManga = () => {
       const updateImage = async (response, title) => {
         const url = response.data[0].secure_url
         const publicId = response.data[0].public_id
-        const setImageUrl = "http://localhost:3000/addImage"
+        const setImageUrl = "http://localhost:3000/updateImage"
         try {
-          const response = await axios.put(setImageUrl, {'title': title, 'url': url, 'publicId': publicId})
+          const response = await axios.put(setImageUrl, {'url': url, 'publicId': publicId})
           console.log(response.data)
           navigate('/Check')
         } catch (error) {

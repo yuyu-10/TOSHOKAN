@@ -52,7 +52,20 @@ const addImage = (req, res) => {
       }
     )
 }
-  
+
+const updateImage = (req, res) => {
+  const { url, publicId } = req.body
+
+  runQuery(
+    `UPDATE images
+    SET url = $1
+    WHERE public_id = $2;`,
+    [url, publicId],
+    (results) => {
+      res.json(results)
+    }
+  )
+}
 
 const deleteImage = async (req, res) => {
     const { publicId } = req.body
@@ -68,5 +81,6 @@ const deleteImage = async (req, res) => {
 module.exports = {
     uploadImages,
     addImage,
-    deleteImage
+    deleteImage,
+    updateImage
 }
