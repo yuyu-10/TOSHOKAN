@@ -18,7 +18,7 @@ export const Liste = () => {
 
     return (
         <div className="containerHome">
-            {mangas.map((x) => <Manga id={x.id} key={x.id} title={x.title} mangaka={x.author} image={x.image}/>)}
+            {mangas.map((x) => <Manga id={x.id} key={x.id} title={x.title} mangaka={x.author} image={x.url}/>)}
         </div>
     )
 }

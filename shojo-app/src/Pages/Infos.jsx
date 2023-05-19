@@ -27,7 +27,7 @@ const Infos = () => {
             setDate(response.data[0].year_of_publication)
             setResume(response.data[0].resume)
             setMangaka(response.data[0].author)
-            setImage(response.data[0].image)
+            setImage(response.data[0].url)
 
             if (response.data[0].animation === true) {
                 setAnimation('Yes')

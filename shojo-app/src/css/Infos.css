@@ -59,6 +59,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .step {
@@ -77,4 +78,7 @@ body, html {
     background-color: white;
     padding: 1vh;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

@@ -5,8 +5,6 @@
 
 # Technologies utilisées
 
-## "Toshokan" a été développé en utilisant les technologies suivantes :
-
 * Javascript
 * React.js
 * Node.js

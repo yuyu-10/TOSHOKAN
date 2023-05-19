@@ -4,9 +4,11 @@ const { pool, runQuery } = require('../index')
 const getAll = (req, res) => {
     runQuery(`
         SELECT *
-        FROM mangakas m
-        RIGHT JOIN shojos s
-        ON s.mangaka_id = m.id
+        FROM shojos s
+        LEFT JOIN mangakas m
+        ON s.mangaka_id = m.mangaka_id
+        LEFT JOIN images i
+        ON s.image_id = i.image_id
         ORDER BY s.title;
         `, null, (results) => res.json(results.rows))
 }
@@ -16,10 +18,12 @@ const getOneShojoByName = (req, res) => {
     const { title } = req.query
 
     runQuery(`
-        SELECT * 
-        FROM mangakas m
-        RIGHT JOIN shojos s
-        ON s.mangaka_id = m.id
+        SELECT *
+        FROM shojos s
+        LEFT JOIN mangakas m
+        ON s.mangaka_id = m.mangaka_id
+        LEFT JOIN images i
+        ON s.image_id = i.image_id
         WHERE s.title ILIKE $1
         ORDER BY s.title;
         `, [`%${title}%`], (results) => {
@@ -36,10 +40,12 @@ const getOneShojoById = (req, res) => {
     const id = parseInt(req.params.id)
 
     runQuery(`
-        SELECT * 
-        FROM mangakas m
-        RIGHT JOIN shojos s
-        ON s.mangaka_id = m.id
+        SELECT *
+        FROM shojos s
+        LEFT JOIN mangakas m
+        ON s.mangaka_id = m.mangaka_id
+        LEFT JOIN images i
+        ON s.image_id = i.image_id
         WHERE s.id = $1;
             `, [id], (results) => {
         if (results.rows.length !== 0) {

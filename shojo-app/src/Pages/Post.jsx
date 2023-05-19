@@ -55,9 +55,10 @@ const Post = () => {
 
   const updateImage = async (response, title) => {
     const url = response.data[0].secure_url
+    const publicId = response.data[0].public_id
     const setImageUrl = "http://localhost:3000/addImage"
     try {
-      const response = await axios.put(setImageUrl, {'title': title, 'url': url})
+      const response = await axios.put(setImageUrl, {'title': title, 'url': url, 'publicId': publicId})
       console.log(response.data)
       navigate('/Check')
     } catch (error) {
@@ -110,7 +111,7 @@ const Post = () => {
                 type="text"
                 {...register("resume")}
                 required
-                maxLength={500}
+                maxLength={700}
               />
             </div>
             <div className="champs">
@@ -118,7 +119,7 @@ const Post = () => {
               <select {...register("mangaka")}>
                 <option style={{textAlign: 'center'}}>--SELECT A MANGAKA--</option>
                 {mangakas.map((x) => (
-                  <option key={x.id} value={x.id} style={{textAlign: 'center'}}>
+                  <option key={x.mangaka_id} value={x.mangaka_id} style={{textAlign: 'center'}}>
                     {x.author}
                   </option>
                 ))}

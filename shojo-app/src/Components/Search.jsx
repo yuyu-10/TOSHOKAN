@@ -19,7 +19,7 @@ export const Search = () => {
     if(typeof mangas == 'string') return <div className="containerHome"><h1 style={{textAlign: "center"}}>Sorry, there is no result for '{uid}'...</h1></div>
     return (
         <div className="containerHome">
-            {mangas.map((x) => <Manga id={x.id} key={x.id} title={x.title} mangaka={x.author} image={x.image}/>)}
+            {mangas.map((x) => <Manga id={x.id} key={x.id} title={x.title} mangaka={x.author} image={x.url}/>)}
         </div> 
     )
 }

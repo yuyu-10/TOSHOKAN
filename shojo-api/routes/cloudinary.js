@@ -1,3 +1,4 @@
+const { response } = require('express');
 const { cloudinary } = require('../cloudinaryConfig')
 const { pool, runQuery } = require('../index')
 
@@ -29,18 +30,43 @@ const uploadImages = async (req, res) => {
 
 //Route to send manga image url added in database
 const addImage = (req, res) => {
-    const { title, url } = req.body
-
-    runQuery(`
-        UPDATE shojos
-        SET image = $1
-        WHERE title = $2
-    `, [`${url}`, `${title}`], (results) => {
-        res.json(results)
-    })
+    const { title, url, publicId } = req.body
+  
+    runQuery(
+      `INSERT INTO images (public_id, url) VALUES ($1, $2) RETURNING image_id;`,
+      [publicId, url],
+      (response) => {
+        if (response && response.rows.length > 0) {
+          const imageId = response.rows[0].image_id
+  
+          runQuery(
+            `UPDATE shojos SET image_id = $1 WHERE title = $2;`,
+            [imageId, title],
+            (results) => {
+              res.json(results)
+            }
+          )
+        } else {
+          res.json({ error: 'Une erreur s\'est produite lors de l\'insertion de l\'image.' })
+        }
+      }
+    )
 }
+  
+
+const deleteImage = async (req, res) => {
+    const { publicId } = req.body
+
+    try {
+        const result = await cloudinary.uploader.destroy(publicId);
+        res.json(result);
+    } catch (error) {
+      res.json('Erreur lors de la suppression de l\'image :', error);
+    }
+};
 
 module.exports = {
     uploadImages,
-    addImage
+    addImage,
+    deleteImage
 }

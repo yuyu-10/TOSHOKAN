@@ -91,3 +91,5 @@ app.put('/addImage', cloud.addImage)
 //Update a manga
 //SetManga page
 app.put('/modifyManga/:id', manga.modifyManga)
+
+app.post('/deleteImage', cloud.deleteImage)
