@@ -1,90 +1,97 @@
-import "../css/Post.css"
-import { useForm } from "react-hook-form"
-import { useState, useEffect } from "react"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
-import { AddMangaka } from "../Components/AddMangaka"
+import "../css/Post.css";
+import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { AddMangaka } from "../Components/AddMangaka";
+
+//Import all request data
+import { getMangakas } from "../api/mangaka";
 
 const Post = () => {
-  const navigate = useNavigate()
-  const { register, handleSubmit } = useForm()
-  const [mangakas, setMangakas] = useState([])
-  const [check, setCheck] = useState(false)
-  const [file, setFile] = useState(null)
-  const errorMessage = <div className="error">This manga is already in the list...</div>
-
-  
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const [mangakas, setMangakas] = useState([]);
+  const [check, setCheck] = useState(false);
+  const [file, setFile] = useState(null);
+  const errorMessage = (
+    <div className="error">This manga is already in the list...</div>
+  );
 
   const onSubmit = async (data) => {
-    console.log(data)
-    const postURL = "http://localhost:3000/addManga"
+    console.log(data);
+    const postURL = "http://localhost:3000/addManga";
     try {
-      const response = await axios.post(postURL, data)
-      verification(response.data, data.title)
+      const response = await axios.post(postURL, data);
+      verification(response.data, data.title);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const verification = (res, title) => {
-    if (res === 'Le titre existe déjà') {
-      setCheck(true)
+    if (res === "Le titre existe déjà") {
+      setCheck(true);
     } else {
-      uploadImage(title)
+      uploadImage(title);
     }
-  }
-  
+  };
 
   const uploadImage = async (title) => {
-    const formData = new FormData()
-    formData.append('title', title)
-    formData.append('image', file)
-    const uploadUrl = "http://localhost:3000/upload"
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("image", file);
+    const uploadUrl = "http://localhost:3000/upload";
     try {
       const response = await axios.post(uploadUrl, formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      updateImage(response, title)
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      updateImage(response, title);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  
+  };
 
   const updateImage = async (response, title) => {
-    const url = response.data[0].secure_url
-    const publicId = response.data[0].public_id
-    const setImageUrl = "http://localhost:3000/addImage"
+    const url = response.data[0].secure_url;
+    const publicId = response.data[0].public_id;
+    const setImageUrl = "http://localhost:3000/addImage";
     try {
-      const response = await axios.put(setImageUrl, {'title': title, 'url': url, 'publicId': publicId})
-      console.log(response.data)
-      navigate('/Check')
+      const response = await axios.put(setImageUrl, {
+        title: title,
+        url: url,
+        publicId: publicId,
+      });
+      console.log(response.data);
+      navigate("/Check");
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
-  
-  
-  const getMangakas = async () => {
-    const getURL = "http://localhost:3000/getMangakas"
-    const response = await axios.get(getURL)
-    setMangakas(response.data)
-  }
-  
+  };
+
+  const fetchDataMangakas = async () => {
+    try {
+      const mangakas = await getMangakas();
+      setMangakas(mangakas);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des mangakas :", error);
+    }
+  };
+
   useEffect(() => {
-    getMangakas()
-  }, [])
+    fetchDataMangakas();
+  }, []);
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0])
-  }
+    setFile(e.target.files[0]);
+  };
 
   return (
     <div className="conatiner-add">
       <div className="post">
-          <h1>Add a new manga</h1>
+        <h1>Add a new manga</h1>
         <div className="formulaire">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="champs">
@@ -116,10 +123,16 @@ const Post = () => {
             </div>
             <div className="champs">
               <label> Mangaka: </label>
-              <select {...register("mangaka")}>
-                <option style={{textAlign: 'center'}}>--SELECT A MANGAKA--</option>
+              <select className="addMangakaSelect" {...register("mangaka")}>
+                <option style={{ textAlign: "center" }}>
+                  --SELECT A MANGAKA--
+                </option>
                 {mangakas.map((x) => (
-                  <option key={x.mangaka_id} value={x.mangaka_id} style={{textAlign: 'center'}}>
+                  <option
+                    key={x.mangaka_id}
+                    value={x.mangaka_id}
+                    style={{ textAlign: "center" }}
+                  >
                     {x.author}
                   </option>
                 ))}
@@ -128,8 +141,8 @@ const Post = () => {
             <div className="champs">
               <label> Animation: </label>
               <select {...register("animation")}>
-                <option style={{textAlign: 'center'}}>no</option>
-                <option style={{textAlign: 'center'}}>yes</option>
+                <option style={{ textAlign: "center" }}>no</option>
+                <option style={{ textAlign: "center" }}>yes</option>
               </select>
             </div>
             <div className="champs">
@@ -137,20 +150,19 @@ const Post = () => {
               <input
                 onChange={handleFileChange}
                 type="file"
-                style={{height: "3vh"}}
+                style={{ height: "3vh" }}
                 required
               />
             </div>
             <button type="submit">Send</button>
           </form>
         </div>
-          {check ? errorMessage : null}
+        {check ? errorMessage : null}
       </div>
 
-      <AddMangaka newMangaka={() => getMangakas()}/>
-
+      <AddMangaka newMangaka={() => fetchDataMangakas()} />
     </div>
-  )
-}
+  );
+};
 
-export default Post
+export default Post;

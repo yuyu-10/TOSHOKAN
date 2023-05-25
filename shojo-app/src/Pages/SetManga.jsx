@@ -4,12 +4,14 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 
+//Import all request data
+import { getMangakas } from "../api/mangaka";
+import { getMangasById } from "../api/manga";
+
 const SetManga = () => {
     const { register, handleSubmit } = useForm()
     const navigate = useNavigate()
-
     const {uid} = useParams()
-    const getURL = `http://localhost:3000/getOneById/${uid}`
 
     const [title, setTitle] = useState('')
     const [date, setDate] = useState('')
@@ -21,35 +23,43 @@ const SetManga = () => {
     const [file, setFile] = useState(null)
     const [mangakas, setMangakas] = useState([])
 
-    const getMangakas = async () => {
-        const getURL = "http://localhost:3000/getMangakas"
-        const response = await axios.get(getURL)
-        setMangakas(response.data)
-    }
-      
-      useEffect(() => {
-        getMangakas()
-      }, [])
+    const fetchDataMangakas = async () => {
+        try {
+          const mangakas = await getMangakas();
+          setMangakas(mangakas);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des mangakas :", error);
+        }
+      };
     
     useEffect(() => {
-        const getData = async() => {
-            const response = await axios.get(getURL)
-            console.log('response', response.data)
-            setTitle(response.data[0].title)
-            setDate(response.data[0].year_of_publication)
-            setResume(response.data[0].resume)
-            setMangaka(response.data[0].mangaka_id)
-            setUrl(response.data[0].url)
-            setPublicId(response.data[0].public_id)
+    fetchDataMangakas();
+    }, []);
 
-            if (response.data[0].animation === true) {
-                setAnimation('yes')
-            } else {
-                setAnimation('no')
-            }
+    const fetchDataMangas = async () => {
+    try {
+        const mangas = await getMangasById(uid);
+        setTitle(mangas.data[0].title)
+        setDate(mangas.data[0].year_of_publication)
+        setResume(mangas.data[0].resume)
+        setMangaka(mangas.data[0].mangaka_id)
+        setUrl(mangas.data[0].url)
+        setPublicId(mangas.data[0].public_id)
+
+        if (mangas.data[0].animation === true) {
+            setAnimation('yes')
+        } else {
+            setAnimation('no')
         }
-        getData()
-    }, [getURL])
+    } catch (error) {
+        console.error("Erreur lors de la récupération des mangas :", error);
+    }
+    };
+
+    useEffect(() => {
+        fetchDataMangas();
+    }, [title]);
+    
 
     const handleChangeTitle = (event) => {
         setTitle(event.target.value)
@@ -116,7 +126,7 @@ const SetManga = () => {
       }
       
     
-      const updateImage = async (response, title) => {
+      const updateImage = async (response) => {
         const url = response.data[0].secure_url
         const publicId = response.data[0].public_id
         const setImageUrl = "http://localhost:3000/updateImage"
@@ -129,74 +139,73 @@ const SetManga = () => {
         }
       }
 
-    if (!title || !date || !resume) return null
+    // if (!title || !date || !resume) return null
     return (
         <div>
             <div className="post" >
                 <h1>Update</h1>
-            <div className="formulaire" style={{width: "80vh", height: "80vh"}}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="champs">
-                    <label> Title: </label>
-                    <input
-                    type="text"
-                    value={title}
-                    {...register("title")}
-                    onChange={handleChangeTitle}
-                    />
+                <div className="formulaire" style={{width: "80vh", height: "80vh"}}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="champs">
+                            <label> Title: </label>
+                            <input
+                            type="text"
+                            value={title}
+                            {...register("title")}
+                            onChange={handleChangeTitle}
+                            />
+                        </div>
+                        <div className="champs">
+                            <label> Year of publication: </label>
+                            <input
+                            type="text"
+                            value={date}
+                            {...register("year")}
+                            onChange={handleChangeDate}
+                            />
+                        </div>
+                        <div className="champs">
+                            <label> Resume: </label>
+                            <textarea
+                            type="text"
+                            value={resume}
+                            maxLength={500}
+                            {...register("resume")}
+                            onChange={handleChangeResume}
+                            />
+                        </div>
+                        <div className="champs">
+                            <label> Mangaka: </label>
+                            <select {...register("mangaka")} value={mangaka}>
+                                {mangakas.map((x) => (
+                                    <option key={x.mangaka_id} value={x.mangaka_id} style={{textAlign: 'center'}}>
+                                    {x.author}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="champs">
+                            <label> Animation: </label>
+                            <select {...register("animation")}>
+                                <option style={{textAlign: 'center'}}>{animation}</option>
+                                <option style={{textAlign: 'center'}}>{animation === 'yes' ? 'no' : 'yes'}</option>
+                            </select>
+                        </div>
+                        <div className="champs" style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <div style={{display: 'flex', flexDirection: 'column'}}>
+                                <label> Choose another image: </label>
+                                <input
+                                type="file"
+                                style={{height: "3vh"}}
+                                onChange={handleFileChange}
+                                />
+                            </div>
+                            
+                            <img src={url} alt="" style={{width: "25vh"}} />
+                        </div>
+                        <button type="submit">Send</button>
+                    </form>
                 </div>
-                <div className="champs">
-                    <label> Year of publication: </label>
-                    <input
-                    type="text"
-                    value={date}
-                    {...register("year")}
-                    onChange={handleChangeDate}
-                    />
-                </div>
-                <div className="champs">
-                    <label> Resume: </label>
-                    <textarea
-                    type="text"
-                    value={resume}
-                    maxLength={500}
-                    {...register("resume")}
-                    onChange={handleChangeResume}
-                    />
-                </div>
-                <div className="champs">
-                    <label> Mangaka: </label>
-                    <select {...register("mangaka")} value={mangaka}>
-                        {/* <option style={{textAlign: 'center'}}>{mangaka}</option> */}
-                        {mangakas.map((x) => (
-                            <option key={x.mangaka_id} value={x.mangaka_id} style={{textAlign: 'center'}}>
-                            {x.author}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className="champs">
-                    <label> Animation: </label>
-                    <select {...register("animation")}>
-                        <option style={{textAlign: 'center'}}>{animation}</option>
-                        <option style={{textAlign: 'center'}}>{animation === 'yes' ? 'no' : 'yes'}</option>
-                    </select>
-                </div>
-                <div className="champs" style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <div style={{display: 'flex', flexDirection: 'column'}}>
-                        <label> Choose another image: </label>
-                        <input
-                        type="file"
-                        style={{height: "3vh"}}
-                        onChange={handleFileChange}
-                        />
-                    </div>
-                    
-                    <img src={url} alt="" style={{width: "25vh"}} />
-                </div>
-                <button type="submit">Send</button>
-                </form>
-            </div>
             </div>
         </div>
     )

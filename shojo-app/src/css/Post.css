@@ -58,7 +58,7 @@
     margin-top: 1%;
 }
 
-button {
+button, .searchMangaka {
     background-color: #f9f9f0;
     border: 1px solid rgb(202, 202, 202);
     border-radius: 4px;
@@ -66,14 +66,14 @@ button {
     /* width: 20%; */
 }
 
-button:hover {
+button, .searchMangaka:hover {
     cursor: pointer;
 }
   
-button:active {
+/* button, .searchMangaka:active {
     background-color: #f3f3d6;
-    transform: translateY(4px);
-}
+    /* transform: translateY(4px);
+}*/
 
 .error {
     margin-top: 3%;
@@ -87,7 +87,7 @@ button:active {
     font-size: large;
 }
 
-select {
+.addMangakaSelect {
     margin-top: 1%;
     height: 4vh;
     border: 1px solid rgb(202, 202, 202);
