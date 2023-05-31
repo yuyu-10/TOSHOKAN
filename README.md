@@ -34,5 +34,3 @@
 * Possibilité pour les utilisateurs de créer une liste personnelle de mangas avec des statuts tels que "Lu", "En cours", "A lire plus tard"
 
 * Il est prévu également d'ajouter des fonctionnalités de recherches, modifications de mangas ainsi que plus d'informations sur eux, et d'autres fonctionnalités pour améliorer l'expérience utilisateur.
-
-Veuillez noter que le projet est en anglais.
