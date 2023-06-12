@@ -19,11 +19,11 @@ const Post = () => {
   );
 
   const onSubmit = async (data) => {
-    console.log(data);
     const postURL = "http://localhost:3000/addManga";
     try {
+      console.log(data);
       const response = await axios.post(postURL, data);
-      verification(response.data, data.title);
+      verification(response.data, data.romanji_title);
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +39,7 @@ const Post = () => {
 
   const uploadImage = async (title) => {
     const formData = new FormData();
-    formData.append("title", title);
+    formData.append("romanji_title", title);
     formData.append("image", file);
     const uploadUrl = "http://localhost:3000/upload";
     try {
@@ -60,7 +60,7 @@ const Post = () => {
     const setImageUrl = "http://localhost:3000/addImage";
     try {
       const response = await axios.put(setImageUrl, {
-        title: title,
+        romanji_title: title,
         url: url,
         publicId: publicId,
       });
@@ -95,14 +95,31 @@ const Post = () => {
         <div className="formulaire">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="champs">
-              <label> Title: </label>
+              <label> Titre original: </label>
               <input
                 type="text"
-                placeholder="Title..."
-                {...register("title")}
+                placeholder="Titre orignal..."
+                {...register("original_title")}
                 required
               />
-            </div>
+          </div>
+          <div className="champs">
+              <label> Titre romanji: </label>
+              <input
+                type="text"
+                placeholder="Titre romanji..."
+                {...register("romanji_title")}
+                required              
+              />
+          </div>
+          <div className="champs">
+              <label> Titre francais: </label>
+              <input
+              type="text"
+              placeholder="Titre francais..."
+              {...register("french_title")}
+             />
+          </div>
             <div className="champs">
               <label> Year of publication: </label>
               <input

@@ -9,7 +9,9 @@ const getAll = (req, res) => {
         ON s.mangaka_id = m.mangaka_id
         LEFT JOIN images i
         ON s.image_id = i.image_id
-        ORDER BY s.title;
+        LEFT JOIN titles t
+        ON s.title_id = t.title_id
+        ORDER BY t.french_title;
         `, null, (results) => res.json(results.rows))
 }
 
@@ -24,8 +26,10 @@ const getOneShojoByName = (req, res) => {
         ON s.mangaka_id = m.mangaka_id
         LEFT JOIN images i
         ON s.image_id = i.image_id
-        WHERE s.title ILIKE $1
-        ORDER BY s.title;
+        LEFT JOIN titles t
+        ON s.title_id = t.title_id
+        WHERE t.french_title ILIKE $1 OR t.romanji_title ILIKE $1
+        ORDER BY t.french_title;
         `, [`%${title}%`], (results) => {
         if (results.rows.length == 0) {
             res.json(`No results for your recherche sorry...`)
@@ -46,6 +50,8 @@ const getOneShojoById = (req, res) => {
         ON s.mangaka_id = m.mangaka_id
         LEFT JOIN images i
         ON s.image_id = i.image_id
+        LEFT JOIN titles t
+        ON s.title_id = t.title_id
         WHERE s.id = $1;
             `, [id], (results) => {
         if (results.rows.length !== 0) {
@@ -58,26 +64,26 @@ const getOneShojoById = (req, res) => {
 
 //Route to add a manga in the database (post page in front)
 const addManga = (req, res) => {
-    const { title, year, mangaka, resume, animation } = req.body
+    const { original_title, romanji_title, french_title, year, mangaka, resume, animation } = req.body
 
-    verifTitle(req, res, title, (result) => {
+    verifTitle(req, res, romanji_title, (result) => {
         if (result.message === "Le titre existe déjà") {
             res.json(result.message)
         } else {
-            addMangaToDatabase(req, res, year, title, mangaka, resume, animation)
+            addMangaToDatabase(req, res, year, original_title, romanji_title, french_title, mangaka, resume, animation)
         }
     })
 }
 
 //Route to check that the manga we want to add does not already exist in the database, check by the title
-const verifTitle = (req, res, title, callback) => {
+const verifTitle = (req, res, romanji_title, callback) => {
     runQuery(
         `
         SELECT * 
-        FROM shojos
-        WHERE UPPER(title) = UPPER($1)
+        FROM titles
+        WHERE UPPER(romanji_title) = UPPER($1)
         `,
-        [`${title}`],
+        [`${romanji_title}`],
         (results) => {
             if (results.rows.length > 0) {
                 callback({ message: "Le titre existe déjà" })
@@ -89,15 +95,32 @@ const verifTitle = (req, res, title, callback) => {
 }
 
 // Route to add the manga after the check
-const addMangaToDatabase = (req, res, year, title, mangaka, resume, animation) => {
+const addMangaToDatabase = (req, res, year, original_title, romanji_title, french_title, mangaka, resume, animation) => {
+
     runQuery(
         `
-        INSERT INTO shojos (year_of_publication, title, mangaka_id, resume, animation)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO titles (original_title, romanji_title, french_title)
+        VALUES ($1, $2, $3)
+        RETURNING title_id;
         `,
-        [`${year}`, `${title}`, mangaka, `${resume}`, animation],
-        (results) => {
-            res.json(`${title} has been had to the data`)
+        [original_title, romanji_title, french_title],
+        (result) => {
+            if (result.error) {
+                res.status(500).json(result.error)
+            } else {
+                const titleId = result.rows[0].title_id
+
+                runQuery(
+                    `
+                    INSERT INTO shojos (year_of_publication, mangaka_id, resume, animation, title_id)
+                    VALUES ($1, $2, $3, $4, $5)
+                    `,
+                    [`${year}`, mangaka, `${resume}`, animation, titleId],
+                    (results) => {
+                        res.json(`${romanji_title} has been had to the data`)
+                    }
+                )
+            }
         }
     )
 }
@@ -105,16 +128,36 @@ const addMangaToDatabase = (req, res, year, title, mangaka, resume, animation) =
 
 const modifyManga = (req, res) => {
     const id = parseInt(req.params.id)
-    const { title, year, mangaka, resume, animation } = req.body
+    const { original_title, romanji_title, french_title, year, mangaka, resume, animation } = req.body
 
     runQuery(`
-        UPDATE shojos
-        SET (year_of_publication, title, mangaka_id, resume, animation) = ($1, $2, $3, $4, $5)
-        WHERE id = $6;
-    `, [`${year}`, `${title}`, mangaka,`${resume}`, animation, id], (result) => {
-        res.json(`${title} has been update`)
+        UPDATE titles
+        SET (original_title, romanji_title, french_title) = ($1, $2, $3)
+        WHERE title_id = (
+        SELECT title_id
+        FROM shojos
+        WHERE id = $4
+        );
+    `, [original_title, romanji_title, french_title, id], (result) => {
+        if (result.error) {
+            res.status(500).json(result.error)
+        } else {
+            runQuery(`
+                UPDATE shojos
+                SET (year_of_publication, mangaka_id, resume, animation) = ($1, $2, $3, $4)
+                WHERE id = $5;
+            `, [year, mangaka, resume, animation, id], (result) => {
+                if (result.error) {
+                    res.status(500).json(result.error)
+                } else {
+                    res.json(`${romanji_title} has been updated`)
+                }
+            })
+        }
     })
 }
+
+
 
 module.exports = {
     getAll,

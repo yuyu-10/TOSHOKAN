@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from "react-router-dom"
 import axios from "axios"
-import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 
 //Import all request data
@@ -9,11 +8,13 @@ import { getMangakas } from "../api/mangaka";
 import { getMangasById } from "../api/manga";
 
 const SetManga = () => {
-    const { register, handleSubmit } = useForm()
     const navigate = useNavigate()
     const {uid} = useParams()
 
     const [title, setTitle] = useState('')
+    const [original_title, setOriginalTitle] = useState('')
+    const [romanji_title, setRomanjiTitle] = useState('')
+    const [french_title, setFrenchTitle] = useState('')
     const [date, setDate] = useState('')
     const [resume, setResume] = useState('')
     const [mangaka, setMangaka] = useState('')
@@ -39,14 +40,18 @@ const SetManga = () => {
     const fetchDataMangas = async () => {
     try {
         const mangas = await getMangasById(uid);
-        setTitle(mangas.data[0].title)
-        setDate(mangas.data[0].year_of_publication)
-        setResume(mangas.data[0].resume)
-        setMangaka(mangas.data[0].mangaka_id)
-        setUrl(mangas.data[0].url)
-        setPublicId(mangas.data[0].public_id)
+        console.log(mangas)
+        setTitle(mangas[0].title === null ? '' : mangas[0].title)
+        setOriginalTitle(mangas[0].original_title)
+        setRomanjiTitle(mangas[0].romanji_title)
+        setFrenchTitle(mangas[0].french_title)
+        setDate(mangas[0].year_of_publication)
+        setResume(mangas[0].resume)
+        setMangaka(mangas[0].mangaka_id)
+        setUrl(mangas[0].url)
+        setPublicId(mangas[0].public_id)
 
-        if (mangas.data[0].animation === true) {
+        if (mangas[0].animation === true) {
             setAnimation('yes')
         } else {
             setAnimation('no')
@@ -58,34 +63,64 @@ const SetManga = () => {
 
     useEffect(() => {
         fetchDataMangas();
-    }, [title]);
+    }, []);
     
+
 
     const handleChangeTitle = (event) => {
         setTitle(event.target.value)
       }
+
+    const handleChangeOriginalTitle = (event) => {
+        setOriginalTitle(event.target.value)
+    }
       
-      const handleChangeDate = (event) => {
+    const handleChangeRomanjiTitle = (event) => {
+        setRomanjiTitle(event.target.value)
+    }
+    
+    const handleChangeFrenchTitle = (event) => {
+        setFrenchTitle(event.target.value)
+    }
+    const handleChangeDate = (event) => {
         setDate(event.target.value)
-      }
-      
-      const handleChangeResume = (event) => {
+    }
+    
+    const handleChangeResume = (event) => {
         setResume(event.target.value)
-      }
+    }
 
-      const handleFileChange = (e) => {
+    const handleChangeAnime = (event) => {
+        setAnimation(event.target.value);
+    };
+
+    const handleChangeMangaka = (event) => {
+        setMangaka(event.target.value);
+    };
+
+    const handleFileChange = (e) => {
         setFile(e.target.files[0])
-      }
+    }
       
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (event) => {
+        event.preventDefault()
         const updateMangaUrl = `http://localhost:3000/modifyManga/${uid}`
         try {
-            console.log(data)
-            const response = await axios.put(updateMangaUrl, data)
+            // console.log(title, original_title, romanji_title, french_title, date, mangaka, resume, animation)
+            const response = await axios.put(updateMangaUrl, {
+                "title": title,
+                "original_title": original_title,
+                "romanji_title": romanji_title,
+                "french_title": french_title,
+                "year": date,
+                "mangaka": mangaka,
+                "resume": resume,
+                "animation": animation
+            })
             getMangakas()
-            console.log(response.data)
-            checkImage(data.title)
+            console.log('title: ', title)
+            checkImage(title)
         } catch (e) {
             console.log(e)
         }
@@ -133,7 +168,7 @@ const SetManga = () => {
         try {
           const response = await axios.put(setImageUrl, {'url': url, 'publicId': publicId})
           console.log(response.data)
-          navigate('/Check')
+          navigate(`/infos/${uid}`)
         } catch (error) {
           console.log(error)
         }
@@ -144,15 +179,30 @@ const SetManga = () => {
         <div>
             <div className="post" >
                 <h1>Update</h1>
-                <div className="formulaire" style={{width: "80vh", height: "80vh"}}>
-                    <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="formulaire" style={{width: "85vh", height: "150vh", marginBottom: "3%"}}>
+                    <form>
                         <div className="champs">
-                            <label> Title: </label>
+                            <label> Titre original: </label>
                             <input
                             type="text"
-                            value={title}
-                            {...register("title")}
-                            onChange={handleChangeTitle}
+                            value={original_title}
+                            onChange={handleChangeOriginalTitle}
+                            />
+                        </div>
+                        <div className="champs">
+                            <label> Titre romanji: </label>
+                            <input
+                            type="text"
+                            value={romanji_title}
+                            onChange={handleChangeRomanjiTitle}
+                            />
+                        </div>
+                        <div className="champs">
+                            <label> Titre francais: </label>
+                            <input
+                            type="text"
+                            value={french_title}
+                            onChange={handleChangeFrenchTitle}
                             />
                         </div>
                         <div className="champs">
@@ -160,7 +210,6 @@ const SetManga = () => {
                             <input
                             type="text"
                             value={date}
-                            {...register("year")}
                             onChange={handleChangeDate}
                             />
                         </div>
@@ -170,13 +219,12 @@ const SetManga = () => {
                             type="text"
                             value={resume}
                             maxLength={500}
-                            {...register("resume")}
                             onChange={handleChangeResume}
                             />
                         </div>
                         <div className="champs">
                             <label> Mangaka: </label>
-                            <select {...register("mangaka")} value={mangaka}>
+                            <select value={mangaka} onChange={handleChangeMangaka}>
                                 {mangakas.map((x) => (
                                     <option key={x.mangaka_id} value={x.mangaka_id} style={{textAlign: 'center'}}>
                                     {x.author}
@@ -186,7 +234,7 @@ const SetManga = () => {
                         </div>
                         <div className="champs">
                             <label> Animation: </label>
-                            <select {...register("animation")}>
+                            <select value={animation} onChange={handleChangeAnime}>
                                 <option style={{textAlign: 'center'}}>{animation}</option>
                                 <option style={{textAlign: 'center'}}>{animation === 'yes' ? 'no' : 'yes'}</option>
                             </select>
@@ -203,7 +251,7 @@ const SetManga = () => {
                             
                             <img src={url} alt="" style={{width: "25vh"}} />
                         </div>
-                        <button type="submit">Send</button>
+                        <button type="button" onClick={(event)=> onSubmit(event)}>Send</button>
                     </form>
                 </div>
             </div>

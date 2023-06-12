@@ -10,7 +10,7 @@ const Infos = () => {
 
     const {uid} = useParams()
     const getURL = `http://localhost:3000/getOneById/${uid}`
-    const [title, setTitle] = useState('')
+    const [titles, setTitles] = useState([])
     const [date, setDate] = useState('')
     const [resume, setResume] = useState('')
     const [mangaka, setMangaka] = useState('')
@@ -23,7 +23,7 @@ const Infos = () => {
         const getData = async() => {
             const response = await axios.get(getURL)
             console.log(response.data)
-            setTitle(response.data[0].title)
+            setTitles([response.data[0].original_title, response.data[0].romanji_title, response.data[0].french_title])
             setDate(response.data[0].year_of_publication)
             setResume(response.data[0].resume)
             setMangaka(response.data[0].author)
@@ -38,11 +38,11 @@ const Infos = () => {
         getData()
     }, [getURL])
     
-    if (!title || !date || !resume || !mangaka || !image || !animation) return null
+    if (!titles || !date || !resume || !mangaka || !image || !animation) return null
     return (
         <div className="infos">
             <div className="title">
-                <h1>{title}</h1>
+                <h1>{titles[0]} &nbsp;/&nbsp; {titles[1]} &nbsp;{titles[2] === null ? null : `/ ${titles[2]}`}</h1>
                 <img alt='' src={set} style={{position: 'absolute', right: 1, top: 1}} onClick={() => navigate(`/SetManga/${uid}`)}></img>
             </div>
             <div className='image'>

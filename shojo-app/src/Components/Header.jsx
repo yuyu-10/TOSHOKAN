@@ -108,7 +108,7 @@ export const Header = () => {
       <button
         className="add"
         onClick={() => {
-          navigate("/Post");
+          navigate("/post");
         }}
       >
         Add a new manga

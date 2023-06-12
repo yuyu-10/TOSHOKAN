@@ -13,6 +13,7 @@ export const Search = () => {
     try {
       const mangas = await getMangasByTitle(uid);
       setMangas(mangas);
+      console.log(mangas)
     } catch (error) {
       console.error("Erreur lors de la récupération des mangas :", error);
     }
@@ -20,7 +21,7 @@ export const Search = () => {
 
   useEffect(() => {
     fetchDataMangas();
-  }, [mangas]);
+  }, [uid]);
 
   if (typeof mangas == "string")
     return (
@@ -36,7 +37,7 @@ export const Search = () => {
         <Manga
           id={x.id}
           key={x.id}
-          title={x.title}
+          title={x.french_title !== null ? x.french_title : x.romanji_title}
           mangaka={x.author}
           image={x.url}
         />
