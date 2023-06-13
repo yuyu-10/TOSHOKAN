@@ -56,16 +56,16 @@ const Infos = () => {
                     </div>
 
                     <div className='step'>
-                        <p>Year: </p> <p>{date}</p>
+                        <p>Année de publication: </p> <p>{date}</p>
                     </div>
 
                     <div className='step'>
-                        <p>Animation: </p> <p>{animation}</p>
+                        <p>Adaptation en animé: </p> <p>{animation}</p>
                     </div>
                 </div>
 
                 <div className="resume">
-                    <p>RESUME: </p><h3>{resume}</h3>
+                    <p>RÉSUMÉ: </p><h3>{resume}</h3>
                 </div>
             </div>
         </div>

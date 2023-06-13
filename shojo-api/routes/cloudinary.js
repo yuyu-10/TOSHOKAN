@@ -78,12 +78,12 @@ const deleteImage = async (req, res) => {
     const { publicId } = req.body
 
     try {
-        const result = await cloudinary.uploader.destroy(publicId);
-        res.json(result);
+        const result = await cloudinary.uploader.destroy(publicId)
+        res.json(result)
     } catch (error) {
-      res.json('Erreur lors de la suppression de l\'image :', error);
+      res.json('Erreur lors de la suppression de l\'image :', error)
     }
-};
+}
 
 module.exports = {
     uploadImages,

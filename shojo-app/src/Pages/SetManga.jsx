@@ -11,7 +11,6 @@ const SetManga = () => {
     const navigate = useNavigate()
     const {uid} = useParams()
 
-    const [title, setTitle] = useState('')
     const [original_title, setOriginalTitle] = useState('')
     const [romanji_title, setRomanjiTitle] = useState('')
     const [french_title, setFrenchTitle] = useState('')
@@ -41,7 +40,6 @@ const SetManga = () => {
     try {
         const mangas = await getMangasById(uid);
         console.log(mangas)
-        setTitle(mangas[0].title === null ? '' : mangas[0].title)
         setOriginalTitle(mangas[0].original_title)
         setRomanjiTitle(mangas[0].romanji_title)
         setFrenchTitle(mangas[0].french_title)
@@ -57,19 +55,13 @@ const SetManga = () => {
             setAnimation('no')
         }
     } catch (error) {
-        console.error("Erreur lors de la récupération des mangas :", error);
+        console.error("Erreur lors de la récupération des mangas :", error)
     }
-    };
+    }
 
     useEffect(() => {
-        fetchDataMangas();
-    }, []);
-    
-
-
-    const handleChangeTitle = (event) => {
-        setTitle(event.target.value)
-      }
+        fetchDataMangas()
+    }, [])
 
     const handleChangeOriginalTitle = (event) => {
         setOriginalTitle(event.target.value)
@@ -107,9 +99,7 @@ const SetManga = () => {
         event.preventDefault()
         const updateMangaUrl = `http://localhost:3000/modifyManga/${uid}`
         try {
-            // console.log(title, original_title, romanji_title, french_title, date, mangaka, resume, animation)
             const response = await axios.put(updateMangaUrl, {
-                "title": title,
                 "original_title": original_title,
                 "romanji_title": romanji_title,
                 "french_title": french_title,
@@ -119,8 +109,7 @@ const SetManga = () => {
                 "animation": animation
             })
             getMangakas()
-            console.log('title: ', title)
-            checkImage(title)
+            checkImage(romanji_title)
         } catch (e) {
             console.log(e)
         }
@@ -145,7 +134,7 @@ const SetManga = () => {
 
     const uploadImage = async (title) => {
         const formData = new FormData()
-        formData.append('title', title)
+        formData.append('romanji_title', title)
         formData.append('image', file)
         const uploadUrl = "http://localhost:3000/upload"
         try {
@@ -167,7 +156,7 @@ const SetManga = () => {
         const setImageUrl = "http://localhost:3000/updateImage"
         try {
           const response = await axios.put(setImageUrl, {'url': url, 'publicId': publicId})
-          console.log(response.data)
+          console.log(response.data[0])
           navigate(`/infos/${uid}`)
         } catch (error) {
           console.log(error)

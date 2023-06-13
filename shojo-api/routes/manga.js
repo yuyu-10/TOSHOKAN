@@ -11,7 +11,7 @@ const getAll = (req, res) => {
         ON s.image_id = i.image_id
         LEFT JOIN titles t
         ON s.title_id = t.title_id
-        ORDER BY t.french_title;
+        ORDER BY CONCAT(t.french_title, t.romanji_title);
         `, null, (results) => res.json(results.rows))
 }
 
@@ -29,7 +29,7 @@ const getOneShojoByName = (req, res) => {
         LEFT JOIN titles t
         ON s.title_id = t.title_id
         WHERE t.french_title ILIKE $1 OR t.romanji_title ILIKE $1
-        ORDER BY t.french_title;
+        ORDER BY CONCAT(t.french_title, t.romanji_title);
         `, [`%${title}%`], (results) => {
         if (results.rows.length == 0) {
             res.json(`No results for your recherche sorry...`)

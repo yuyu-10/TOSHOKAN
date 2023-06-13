@@ -78,11 +78,11 @@ export const Header = () => {
             navigate("/liste");
           }}
         >
-          See all
+          Voir tous les mangas
         </button>
         <input
           type="text"
-          placeholder="Which manga?"
+          placeholder="Quel manga cherches tu ?"
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           onKeyPress={handleKeyPress}
@@ -93,7 +93,7 @@ export const Header = () => {
           className="searchMangaka"
           style={{ marginLeft: "1vh", width: "30vh" }}
         >
-          <option style={{ textAlign: "center" }}>See all manga of ...</option>
+          <option style={{ textAlign: "center" }}>Voir tous les mangas de ...</option>
           {mangakas.map((x) => (
             <option
               key={x.mangaka_id}
@@ -111,7 +111,7 @@ export const Header = () => {
           navigate("/post");
         }}
       >
-        Add a new manga
+        Ajouter un nouveau manga/mangaka
       </button>
     </div>
   );

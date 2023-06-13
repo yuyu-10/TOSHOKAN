@@ -91,7 +91,7 @@ const Post = () => {
   return (
     <div className="conatiner-add">
       <div className="post">
-        <h1>Add a new manga</h1>
+        <h1>Ajouté un manga ou mangaka</h1>
         <div className="formulaire">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="champs">
@@ -121,16 +121,16 @@ const Post = () => {
              />
           </div>
             <div className="champs">
-              <label> Year of publication: </label>
+              <label>Année de publication: </label>
               <input
                 type="text"
-                placeholder="Year..."
+                placeholder="Année..."
                 {...register("year")}
                 required
               />
             </div>
             <div className="champs">
-              <label> Resume: </label>
+              <label> Résumé: </label>
               <textarea
                 type="text"
                 {...register("resume")}
@@ -142,7 +142,7 @@ const Post = () => {
               <label> Mangaka: </label>
               <select className="addMangakaSelect" {...register("mangaka")}>
                 <option style={{ textAlign: "center" }}>
-                  --SELECT A MANGAKA--
+                  --SELECTIONNE UN MANGAKA--
                 </option>
                 {mangakas.map((x) => (
                   <option
@@ -163,7 +163,7 @@ const Post = () => {
               </select>
             </div>
             <div className="champs">
-              <label> Choose an image: </label>
+              <label> Image: </label>
               <input
                 onChange={handleFileChange}
                 type="file"
@@ -171,7 +171,7 @@ const Post = () => {
                 required
               />
             </div>
-            <button type="submit">Send</button>
+            <button type="submit">Envoyé</button>
           </form>
         </div>
         {check ? errorMessage : null}
