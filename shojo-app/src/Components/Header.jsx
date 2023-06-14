@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "../css/Header.css";
 import { useNavigate } from "react-router-dom";
 import logo from "../img/logo_TK.png";
+import { Button } from 'antd';
 
 //Import all request data
 import { getMangakas } from "../api/mangaka";
@@ -73,13 +74,14 @@ export const Header = () => {
     <div className="header" style={styles.header}>
       <img onClick={() => navigate("/")} src={logo} alt="" />
       <div className="container-recherche">
-        <button
-          onClick={() => {
-            navigate("/liste");
-          }}
-        >
+      <Button           
+        onClick={() => {
+          navigate("/liste");
+        }}
+        style={{backgroundColor: '#f9f9f0', color: 'black'}}
+        type="primary">
           Voir tous les mangas
-        </button>
+      </Button>
         <input
           type="text"
           placeholder="Quel manga cherches tu ?"
@@ -105,14 +107,15 @@ export const Header = () => {
           ))}
         </select>
       </div>
-      <button
-        className="add"
+      <Button   
+        className="add"        
         onClick={() => {
           navigate("/post");
         }}
-      >
-        Ajouter un nouveau manga/mangaka
-      </button>
+        style={{backgroundColor: '#f9f9f0', color: 'black'}}
+        type="primary">
+          Ajouter un nouveau manga/mangaka
+      </Button>
     </div>
   );
 };
