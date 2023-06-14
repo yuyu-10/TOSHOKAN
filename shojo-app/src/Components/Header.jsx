@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "../css/Header.css";
 import { useNavigate } from "react-router-dom";
 import logo from "../img/logo_TK.png";
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
 
 //Import all request data
 import { getMangakas } from "../api/mangaka";
@@ -91,11 +91,10 @@ export const Header = () => {
         />
         {/* <button onClick={activateButton}>Search</button> */}
 
-        <select
-          className="searchMangaka"
+        <Select
+          placeholder="Je veux voir les mangas de: "
           style={{ marginLeft: "1vh", width: "30vh" }}
         >
-          <option style={{ textAlign: "center" }}>Voir tous les mangas de ...</option>
           {mangakas.map((x) => (
             <option
               key={x.mangaka_id}
@@ -105,7 +104,7 @@ export const Header = () => {
               {x.author}
             </option>
           ))}
-        </select>
+        </Select>
       </div>
       <Button   
         className="add"        
