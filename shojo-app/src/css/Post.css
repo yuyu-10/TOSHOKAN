@@ -88,13 +88,6 @@ button, .searchMangaka:hover {
     font-size: large;
 }
 
-.addMangakaSelect {
-    margin-top: 1%;
-    height: 4vh;
-    border: 1px solid rgb(202, 202, 202);
-    border-radius: 4px;
-}
-
 .ok {
   margin-top: 3%;
   width: 40%;

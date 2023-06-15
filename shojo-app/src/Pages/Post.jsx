@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AddMangaka } from "../Components/AddMangaka";
+// import { Select } from "antd";
 
 //Import all request data
 import { getMangakas } from "../api/mangaka";
@@ -154,6 +155,21 @@ const Post = () => {
                   </option>
                 ))}
               </select>
+              {/* <Select
+                {...register("mangaka")}
+                placeholder="MANGAKA"
+                style={{ width: '75vh', marginTop: '1%', textAlign: 'center' }}
+              >
+                {mangakas.map((x) => (
+                  <option
+                    key={x.mangaka_id}
+                    value={x.mangaka_id}
+                    style={{ textAlign: "center" }}
+                  >
+                    {x.author}
+                  </option>
+                ))}
+              </Select> */}
             </div>
             <div className="champs">
               <label> Animation: </label>

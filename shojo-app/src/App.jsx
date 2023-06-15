@@ -1,5 +1,5 @@
 import { Header } from './Components/Header'
-import { Liste } from './Components/Liste'
+import { Liste } from './Pages/Liste'
 import { Search } from './Components/Search'
 import { Check } from './Components/Check'
 import { Up } from "./Components/Up"

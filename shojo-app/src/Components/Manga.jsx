@@ -1,11 +1,14 @@
 import "../css/Manga.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
-export const Manga = ({id, title, mangaka, image}) => {
+export const Manga = (({ id, title, mangaka, image }) => {
     const navigate = useNavigate()
 
     return (
-        <div onClick={() => navigate(`/infos/${id}`)} key={id} className="mangaContainer">
+        <div onClick={() => navigate(`/infos/${id}`)}
+            key={id}
+            className="mangaContainer"
+        >
             <div className="img-list">
                 <img src={image} alt="" />
             </div>
@@ -16,4 +19,4 @@ export const Manga = ({id, title, mangaka, image}) => {
             </div>
         </div>
     )
-}
+})
