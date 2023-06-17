@@ -67,7 +67,7 @@ export const Header = () => {
   };
 
   const activateButton = () => {
-    navigate(`/search/${title}`);
+    navigate(`/searchTitle/${title}`);
   };
 
   return (
@@ -93,8 +93,14 @@ export const Header = () => {
 
         <Select
           placeholder="Je veux voir les mangas de: "
-          style={{ marginLeft: "1vh", width: "30vh" }}
+          style={{ marginLeft: "1vh", width: "30vh", textAlign: 'center' }}
         >
+          <option
+          value={null}
+          style={{ textAlign: "center" }}
+          >
+            Je veux voir les mangas de:
+          </option>
           {mangakas.map((x) => (
             <option
               key={x.mangaka_id}

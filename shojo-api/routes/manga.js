@@ -157,8 +157,6 @@ const modifyManga = (req, res) => {
     })
 }
 
-
-
 module.exports = {
     getAll,
     getOneShojoByName,

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Manga } from "../Components/Manga";
+import { Manga } from "./Manga";
 
 //Import request data
 import { getMangasByTitle } from "../api/manga";
 
-export const Search = () => {
+export const SearchByTitle = () => {
   let { uid } = useParams();
   const [mangas, setMangas] = useState("");
 

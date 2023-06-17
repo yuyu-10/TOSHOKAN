@@ -33,7 +33,21 @@ const addMangaka = (req, res) => {
     })
 }
 
+const getMangakaByName = (req, res) => {
+    const { mangaka } = req.body
+
+    runQuery(`
+        SELECT s.*
+        FROM shojos s
+        JOIN mangakas m ON s.mangaka_id = m.mangaka_id
+        WHERE m.author = $1
+    `, [mangaka], (results) => {
+        res.json(results.rows)
+    })
+}
+
 module.exports = {
     getAllMangakas,
-    addMangaka
+    addMangaka,
+    getMangakaByName
 }

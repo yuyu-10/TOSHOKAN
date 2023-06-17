@@ -1,10 +1,10 @@
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'yuna',
-  host: 'localhost',
-  database: 'shojo',
-  password: 'kaikai1269',
-  port: 5433,
+  user: process.env.USER_NAME,
+  host: process.env.HOST_DB,
+  database: process.env.DB_NAME,
+  password: process.env.PASSWORD_DB,
+  port: process.env.PORT_DB,
 })
 
 function runQuery(request, parameters, callback) {
@@ -95,3 +95,5 @@ app.put('/modifyManga/:id', manga.modifyManga)
 app.post('/deleteImage', cloud.deleteImage)
 
 app.put('/updateImage', cloud.updateImage)
+
+app.get('/getMangakaByName', mangaka.getMangakaByName)

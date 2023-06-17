@@ -1,6 +1,6 @@
 import { Header } from './Components/Header'
 import { Liste } from './Pages/Liste'
-import { Search } from './Components/Search'
+import { SearchByTitle } from './Components/SearchByTitle'
 import { Check } from './Components/Check'
 import { Up } from "./Components/Up"
 import Infos from './Pages/Infos'
@@ -25,7 +25,7 @@ function App() {
       
       <Routes>
         <Route path='/liste' element={<Liste />}></Route>
-        <Route name='search' path='/search/:uid' element={<Search />}></Route>
+        <Route name='search' path='/searchTitle/:uid' element={<SearchByTitle />}></Route>
         <Route path='/post' element={<Post />}></Route>
         <Route path='/check' element={<Check />}></Route>
         <Route path='/infos/:uid' element={<Infos />}></Route>
