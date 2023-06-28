@@ -10,7 +10,7 @@ import { getMangakas } from "../api/mangaka";
 export const Header = () => {
   const [title, setTitle] = useState("");
   const navigate = useNavigate();
-  const [headerOpacity, setHeaderOpacity] = useState(1);
+  const [headerOpacity, setHeaderOpacity] = useState(0.95);
   const [mangakas, setMangakas] = useState([]);
 
   useEffect(() => {
@@ -37,13 +37,12 @@ export const Header = () => {
       justifyContent: "center",
       alignItems: "center",
       borderBottom: "1px solid rgb(202, 201, 201)",
-      boxShadow: "0 5px 5px rgb(231, 230, 230)",
-      backgroundColor: "#EDDBC7",
+      boxShadow: "0 2px 2px rgb(231, 230, 230)",
+      backgroundColor: "#C49D83",
       opacity: headerOpacity,
       transition: "opacity 0.3s ease-in-out",
       position: "sticky",
-      top: 0,
-      marginBottom: "1%",
+      top: 0
     },
   };
 
