@@ -16,10 +16,10 @@
     position: relative;
 }
 
-.mangaContainer:hover {
+/* .mangaContainer:hover {
     background-color: #d2d2d2;
     cursor: pointer;
-}
+} */
 
 .informations-manga {
     display: flex;
@@ -39,9 +39,10 @@
     font-family: 'Ysabeau Infant', sans-serif;
 }
 
-img {
+.mangaContainer img {
     width: 25vh;
     border-radius: 5px;
+    cursor: default;
 }
 
 .view {

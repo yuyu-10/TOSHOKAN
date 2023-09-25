@@ -12,6 +12,7 @@ export const Header = () => {
   const navigate = useNavigate();
   const [headerOpacity, setHeaderOpacity] = useState(0.95);
   const [mangakas, setMangakas] = useState([]);
+  const [selectedMangaka, setSelectedMangaka] = useState(null);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -38,7 +39,7 @@ export const Header = () => {
       alignItems: "center",
       borderBottom: "1px solid rgb(202, 201, 201)",
       boxShadow: "0 2px 2px rgb(231, 230, 230)",
-      backgroundColor: "#C49D83",
+      backgroundColor: "#DFC5AC",
       opacity: headerOpacity,
       transition: "opacity 0.3s ease-in-out",
       position: "sticky",
@@ -70,6 +71,16 @@ export const Header = () => {
     navigate(`/searchTitle/${title}`);
   };
 
+  const goMangaMangaka = () => {
+    navigate(`/searchByAuthor/${selectedMangaka}`);
+  };
+
+  useEffect(() => {
+    if (selectedMangaka) {
+      goMangaMangaka();
+    }
+  }, [selectedMangaka]);
+
   return (
     <div className="header" style={styles.header}>
       <img onClick={() => navigate("/")} src={logo} alt="" />
@@ -94,6 +105,7 @@ export const Header = () => {
         <Select
           placeholder="Je veux voir les mangas de: "
           style={{ marginLeft: "1vh", width: "30vh", textAlign: 'center' }}
+          onChange={value => setSelectedMangaka(value)}
         >
           <option
           value={null}

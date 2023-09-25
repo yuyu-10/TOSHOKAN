@@ -8,7 +8,7 @@ export const Manga = (({ id, title, mangaka, image }) => {
         <div className="mangaContainer">
             <div key={id}>
 
-                <img src={image} alt="" />
+                <img src={image} />
 
                 <div className="informations-manga">
                     <h2>{title}</h2>

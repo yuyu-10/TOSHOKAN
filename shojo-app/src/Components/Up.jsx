@@ -11,7 +11,7 @@ export const Up = () => {
     }
 
     return (
-        <div style={{ position: "fixed", bottom: "3vh", right: "3vh"}}>
+        <div style={{ position: "fixed", bottom: "3vh", right: "3vh", zIndex: "1"}}>
             <img onClick={scrollToTop} style={{ width: "10vh"}} src={up} alt="" />
         </div>
     )

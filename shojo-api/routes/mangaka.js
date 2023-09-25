@@ -34,13 +34,13 @@ const addMangaka = (req, res) => {
 }
 
 const getMangakaByName = (req, res) => {
-    const { mangaka } = req.body
+    const { mangaka } = (req.query)
 
     runQuery(`
         SELECT s.*
         FROM shojos s
         JOIN mangakas m ON s.mangaka_id = m.mangaka_id
-        WHERE m.author = $1
+        WHERE m.mangaka_id = $1
     `, [mangaka], (results) => {
         res.json(results.rows)
     })

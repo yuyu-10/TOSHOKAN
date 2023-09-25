@@ -1,9 +1,9 @@
 import '../css/Infos.css'
 import { useEffect, useState } from 'react'
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"
 import axios from "axios"
 import set from "../img/update.png"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 const Infos = () => {
     const navigate = useNavigate()

@@ -1,27 +1,27 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Manga } from "./Manga";
+import { useState, useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { Manga } from "./Manga"
 
 //Import request data
-import { getMangasByTitle } from "../api/manga";
+import { getMangasByTitle } from "../api/manga"
 
 export const SearchByTitle = () => {
-  let { uid } = useParams();
-  const [mangas, setMangas] = useState("");
+  let { uid } = useParams()
+  const [mangas, setMangas] = useState("")
 
   const fetchDataMangas = async () => {
     try {
-      const mangas = await getMangasByTitle(uid);
-      setMangas(mangas);
+      const mangas = await getMangasByTitle(uid)
+      setMangas(mangas)
       console.log(mangas)
     } catch (error) {
-      console.error("Erreur lors de la récupération des mangas :", error);
+      console.error("Erreur lors de la récupération des mangas :", error)
     }
   };
 
   useEffect(() => {
-    fetchDataMangas();
-  }, [uid]);
+    fetchDataMangas()
+  }, [uid])
 
   if (typeof mangas == "string")
     return (
@@ -43,5 +43,5 @@ export const SearchByTitle = () => {
         />
       ))}
     </div>
-  );
-};
+  )
+}

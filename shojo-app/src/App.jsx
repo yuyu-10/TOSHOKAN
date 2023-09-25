@@ -7,6 +7,8 @@ import Infos from './Pages/Infos'
 import Post from './Pages/Post'
 import SetManga from './Pages/SetManga'
 import Home from './Pages/Home'
+import SearchByAuthor from './Pages/SearchByAuthor'
+
 import {Route, Routes, useLocation} from 'react-router-dom'
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
         <Route path='/check' element={<Check />}></Route>
         <Route path='/infos/:uid' element={<Infos />}></Route>
         <Route path='/SetManga/:uid' element={<SetManga />}></Route>
+        <Route path='/SearchByAuthor/:uid' element={<SearchByAuthor />}></Route>
       </Routes>
     </div>
   )
